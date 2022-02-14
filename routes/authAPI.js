@@ -59,6 +59,8 @@ router.post("/loginUserWithPhoneNum", async (req, res) => {
       });
     });
 
+    // console.log("req.body",req.body)
+
     if (userData === null) {
       userData = {
         name: "",
@@ -67,10 +69,10 @@ router.post("/loginUserWithPhoneNum", async (req, res) => {
         photo: "",
         createdAt: new Date().toLocaleDateString(),
       };
-      await users.doc().set();
+      await users.doc().set(userData);
     }
 
-    const token = jwt.sign(userData, "secret code", { expiresIn: "3600*48" });
+    const token = jwt.sign(userData, "secret code", { expiresIn: "1d" });
 
     res.cookie("userToken", token, { maxAge: 900000 });
 
@@ -102,21 +104,22 @@ router.post("/loginUserWithEmail", async (req, res) => {
     });
 
     if (userData === "") {
-      userData = await users.doc().set({
+      userData = {
         name: req.body.displayName,
         email: req.body.email,
         phoneNumber: "",
         photo: req.body.photoURL,
         createdAt: new Date().toLocaleDateString(),
-      });
+      }
+      await users.doc().set(userData);
     }
 
     const token = jwt.sign(userData, "secret code", {
-      expiresIn: "3600*48",
+      expiresIn: "1d",
     });
 
     res.cookie("userToken", token);
-    console.log("token", req.cookies);
+    // console.log("token", req.cookies);
 
     return res.status(200).json(userData);
     // const data = await users.get();
