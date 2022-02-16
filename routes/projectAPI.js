@@ -3,7 +3,8 @@ const router = express.Router();
 const Project = require("../models/Project");
 
 router.post("/new", async (req, res) => {
-  const { title, description, price, userId, catagory, imageUrl } = req.body;
+  const { title, description, price, userId, catagory, imageUrl, owner } =
+    req.body;
   const newProject = new Project({
     userId,
     title,
@@ -11,6 +12,7 @@ router.post("/new", async (req, res) => {
     price,
     catagory,
     imageUrl,
+    owner,
   });
   try {
     const project = await newProject.save();

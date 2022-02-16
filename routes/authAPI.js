@@ -53,6 +53,7 @@ router.post("/loginUserWithPhoneNum", async (req, res) => {
       querySnapshot.forEach((doc) => {
         if (doc.data().phoneNumber === req.body.phoneNumber) {
           userData = doc.data();
+          console.log(doc.data());
           return;
         }
         // console.log(doc.id, " => ", doc.data());
@@ -110,7 +111,7 @@ router.post("/loginUserWithEmail", async (req, res) => {
         phoneNumber: "",
         photo: req.body.photoURL,
         createdAt: new Date().toLocaleDateString(),
-      }
+      };
       await users.doc().set(userData);
     }
 
